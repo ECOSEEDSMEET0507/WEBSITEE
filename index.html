@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSeed Mat - Revolutionizing Eco-Stabilization and Cultivation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --light-green: #4caf50;
+            --dark-green: #1b5e20;
+            --accent-color: #8bc34a;
+            --risk-high: #f44336;
+            --risk-medium: #ff9800;
+            --risk-low: #ffeb3b;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--primary-green);
+        }
+        
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(46, 125, 50, 0.8), rgba(46, 125, 50, 0.6)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234caf50"/><path d="M0,50 L100,50 M50,0 L50,100" stroke="%232e7d32" stroke-width="2"/></svg>');
+            background-size: cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .product-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
+            height: 100%;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+            border-color: var(--dark-green);
+        }
+        
+        .section-title {
+            color: var(--primary-green);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .footer {
+            background-color: var(--dark-green);
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .map-container {
+            height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .payment-page {
+            background-color: #f8f9fa;
+            padding: 40px 0;
+        }
+        
+        .payment-card {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        
+        .mission-vision {
+            background-color: #f1f8e9;
+            padding: 60px 0;
+        }
+        
+        .map-legend {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 3px;
+        }
+        
+        .risk-high {
+            background-color: var(--risk-high);
+        }
+        
+        .risk-medium {
+            background-color: var(--risk-medium);
+        }
+        
+        .risk-low {
+            background-color: var(--risk-low);
+        }
+        
+        .risk-eco {
+            background-color: var(--primary-green);
+        }
+        
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .card-body .btn {
+            margin-top: auto;
+        }
+        
+        .eco-mat-hero {
+            background: linear-gradient(rgba(46, 125, 50, 0.7), rgba(46, 125, 50, 0.7)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><rect width="800" height="400" fill="%23e8f5e9"/><rect x="50" y="50" width="700" height="300" fill="%23c8e6c9" stroke="%232e7d32" stroke-width="2"/><text x="400" y="120" font-family="Arial" font-size="36" text-anchor="middle" fill="%232e7d32">ECOSEED MAT</text><text x="400" y="160" font-family="Arial" font-size="18" text-anchor="middle" fill="%232e7d32">All-in-One Biodegradable Solution</text><circle cx="200" cy="220" r="25" fill="%238bc34a"/><circle cx="400" cy="220" r="25" fill="%238bc34a"/><circle cx="600" cy="220" r="25" fill="%238bc34a"/><text x="200" y="280" font-family="Arial" font-size="14" text-anchor="middle" fill="%232e7d32">Seeds</text><text x="400" y="280" font-family="Arial" font-size="14" text-anchor="middle" fill="%232e7d32">Fertilizer</text><text x="600" y="280" font-family="Arial" font-size="14" text-anchor="middle" fill="%232e7d32">Soil Matrix</text></svg>');
+            background-size: cover;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .coordinates-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+            font-size: 12px;
+        }
+        
+        .coordinates-info h6 {
+            margin-bottom: 5px;
+            color: var(--primary-green);
+        }
+        
+        .coordinates-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .coordinate-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .coordinate-item:last-child {
+            border-bottom: none;
+        }
+        
+        .single-product-section {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .product-details {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .product-features {
+            margin: 30px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+        }
+        
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .language-btn {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--primary-green);
+            color: var(--primary-green);
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 5px;
+        }
+        
+        .language-btn:hover {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .language-btn.active {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        /* Login Modal Styles */
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+        }
+        
+        .modal-header {
+            background-color: var(--primary-green);
+            color: white;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .modal-footer {
+            border-top: none;
+        }
+        
+        .auth-tabs .nav-link {
+            color: var(--primary-green);
+        }
+        
+        .auth-tabs .nav-link.active {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .admin-table {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-table th {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .status-pending {
+            color: #ff9800;
+            font-weight: bold;
+        }
+        
+        .status-approved {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .status-rejected {
+            color: #f44336;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Payment Method Styles */
+        .payment-method {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary-green);
+            background-color: #f8fff8;
+        }
+        
+        .payment-method.selected {
+            border-color: var(--primary-green);
+            background-color: #e8f5e9;
+        }
+        
+        .payment-method img {
+            height: 30px;
+            margin-right: 10px;
+        }
+        
+        .payment-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: var(--primary-green);
+        }
+        
+        /* QR Code Styles */
+        .qr-code-container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+        }
+        
+        .payment-success {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .payment-success-icon {
+            font-size: 80px;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+        
+        /* Touch 'n Go Styles */
+        .tng-payment {
+            background: linear-gradient(135deg, #FF6B00, #FF8C00);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .tng-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .tng-logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .tng-phone-input {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .tng-phone-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .tng-button {
+            background: white;
+            color: #FF6B00;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button id="lang-en" class="language-btn active" onclick="setLanguage('en')">English</button>
+        <button id="lang-ms" class="language-btn" onclick="setLanguage('ms')">Malay</button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                 <img src="images/logo-ecoseed.jpg" width="80" alt="EcoSeed Logo" class="rounded-circle mb-3">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home" id="nav-home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#product" id="nav-product">Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#maps" id="nav-maps">Landslide Risk Maps</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#payment" id="nav-payment">Payment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about" id="nav-about">About Us</a>
+                    </li>
+                    <li class="nav-item" id="admin-nav-item" style="display: none;">
+                        <a class="nav-link" href="#admin" id="nav-admin">Admin Panel</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#cart">
+                            <svg xmlns="photo_2025-11-18_17-06-27.JPG" width="20" height="20" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg>
+                            <span id="nav-cart">Cart</span> (<span id="cart-count">0</span>)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="nav-login" data-bs-toggle="modal" data-bs-target="#authModal">Login</a>
+                    </li>
+                    <li class="nav-item" id="user-nav-item" style="display: none;">
+                        <div class="nav-link">
+                            <span id="user-greeting">Hello, User</span>
+                            <a href="#" id="logout-btn" class="ms-2" onclick="logout()">(Logout)</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login/Register Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authModalTitle">Login to EcoSeed Mat</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs auth-tabs mb-3" id="authTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Login</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Register</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="authTabsContent">
+                        <!-- Login Form -->
+                        <div class="tab-pane fade show active" id="login" role="tabpanel">
+                            <form id="login-form">
+                                <div class="mb-3">
+                                    <label for="login-email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="login-email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="login-password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="login-password" required>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember-me">
+                                    <label class="form-check-label" for="remember-me">Remember me</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Login</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Register Form -->
+                        <div class="tab-pane fade" id="register" role="tabpanel">
+                            <form id="register-form">
+                                <div class="mb-3">
+                                    <label for="reg-name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="reg-name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reg-email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="reg-email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reg-password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="reg-password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reg-confirm-password" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="reg-confirm-password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reg-phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="reg-phone">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reg-address" class="form-label">Address</label>
+                                    <textarea class="form-control" id="reg-address" rows="2"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Home Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold" id="home-title">Revolutionizing Eco-Stabilization and Cultivation</h1>
+            <p class="lead" id="home-description">Founded in 2024, EcoSeed Mat emerged as a pioneering startup with a profound vision: to democratize accessible, sustainable cultivation and provide innovative solutions for environmental challenges.</p>
+            <a href="#product" class="btn btn-light btn-lg mt-3" id="home-button">Discover EcoSeed Mat</a>
+        </div>
+    </section>
+
+    <!-- Single Product Section -->
+    <section id="product" class="single-product-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="product-details">
+                        <h2 class="section-title" id="product-title">EcoSeed Mat</h2>
+                        <p class="lead" id="product-subtitle">The Ultimate All-in-One Solution for Sustainable Landscaping and Erosion Control</p>
+                        
+                        <div class="product-features">
+                            <h4 id="product-features">Key Features:</h4>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div>
+                                    <h5 id="product-feature1-title">100% Biodegradable</h5>
+                                    <p id="product-feature1-description">Eco-friendly materials that naturally decompose and enrich soil</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-seedling"></i>
+                                </div>
+                                <div>
+                                    <h5 id="product-feature2-title">Pre-seeded</h5>
+                                    <p id="product-feature2-description">Premium grass and plant seeds for guaranteed germination</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                                <div>
+                                    <h5 id="product-feature3-title">Water Retention</h5>
+                                    <p id="product-feature3-description">Advanced technology reduces watering needs by 50%</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div>
+                                    <h5 id="product-feature4-title">Erosion Control</h5>
+                                    <p id="product-feature4-description">Specialized design prevents soil erosion on slopes</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="text-success">RM 50.00</h3>
+                            <p class="text-muted" id="product-price">Per 10 sqm roll | Free shipping available</p>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-4">
+                            <label for="quantity" class="me-3 fw-bold" id="product-quantity">Quantity:</label>
+                            <select id="quantity" class="form-select w-auto">
+                                <option value="1" id="product-option1">1 Roll (10 sqm)</option>
+                                <option value="2" id="product-option2">2 Rolls (20 sqm)</option>
+                                <option value="5" id="product-option3">5 Rolls (50 sqm)</option>
+                                <option value="10" id="product-option4">10 Rolls (100 sqm)</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-lg w-100 add-to-cart" data-product="EcoSeed Mat" data-price="50.00">
+                            <i class="fas fa-shopping-cart"></i> <span id="product-addToCart">Add to Cart</span> - RM 50.00
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+			            <img src="images/product-ecoseed.jpg" alt="EcoSeed Mat Product" width="700" height="400" class="img-fluid rounded">      
+                </div>
+            </div>
+            
+            <!-- Product Specifications -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="product-details">
+                        <h3 class="section-title" id="product-specifications">Product Specifications</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table">
+                                    <tr>
+                                        <th id="product-spec1-title">Coverage Area</th>
+                                        <td id="product-spec1-value">10 square meters per roll</td>
+                                    </tr>
+                                    <tr>
+                                        <th id="product-spec2-title">Seed Composition</th>
+                                        <td id="product-spec2-value">Premium blend of 5 grass varieties</td>
+                                    </tr>
+                                    <tr>
+                                        <th id="product-spec3-title">Germination Time</th>
+                                        <td id="product-spec3-value">5-10 days under optimal conditions</td>
+                                    </tr>
+                                    <tr>
+                                        <th id="product-spec4-title">Fertilizer</th>
+                                        <td id="product-spec4-value">Slow-release organic fertilizer</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table">
+                                    <tr>
+                                        <th id="product-spec5-title">Biodegradation Time</th>
+                                        <td id="product-spec5-value">6-12 months</td>
+                                    </tr>
+                                    <tr>
+                                        <th id="product-spec6-title">Installation</th>
+                                        <td id="product-spec6-value">Unroll on prepared soil and water</td>
+                                    </tr>
+                                    <tr>
+                                        <th id="product-spec7-title">Applications</th>
+                                        <td id="product-spec7-value">Lawns, slopes, erosion control</td>
+                                    </tr>
+                                    <tr>
+                                        <th id="product-spec8-title">Warranty</th>
+                                        <td id="product-spec8-value">12-month growth guarantee</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Maps Section -->
+    <section id="maps" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center" id="maps-title">Landslide Risk Areas & Our Solutions</h2>
+            <p class="text-center mb-4" id="maps-subtitle">Identifying high-risk areas for landslides and providing EcoSeed Mat solutions for stabilization</p>
+            
+            <div class="row mb-4">
+                <div class="col-md-8 mx-auto">
+                    <div class="map-legend">
+                        <h6 id="maps-legend">Risk Level Legend:</h6>
+                        <div class="legend-item">
+                            <div class="legend-color risk-high"></div>
+                            <span id="maps-legendHigh">High Risk Area</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color risk-medium"></div>
+                            <span id="maps-legendMedium">Medium Risk Area</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color risk-low"></div>
+                            <span id="maps-legendLow">Low Risk Area</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color risk-eco"></div>
+                            <span id="maps-legendEco">EcoSeed Mat Project Site</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h4 class="text-center mb-3" id="maps-thailand">Landslide Risk Areas in Thailand</h4>
+                    <div id="thailand-map" class="map-container">
+                        <div class="coordinates-info">
+                            <h6 id="maps-thailandCoordinates">Thailand Risk Coordinates:</h6>
+                            <div class="coordinates-list" id="thailand-coordinates">
+                                <!-- Koordinat akan ditampilkan di sini -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="text-center mb-3" id="maps-global">Global Landslide Risk Areas</h4>
+                    <div id="world-map" class="map-container">
+                        <div class="coordinates-info">
+                            <h6 id="maps-globalCoordinates">Global Risk Coordinates:</h6>
+                            <div class="coordinates-list" id="world-coordinates">
+                                <!-- Koordinat akan ditampilkan di sini -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-10 mx-auto">
+                    <div class="alert alert-info">
+                        <h5 id="maps-howItHelps">How EcoSeed Mat Helps Prevent Landslides</h5>
+                        <p id="maps-howItHelpsText">Our EcoSeed Mat works to stabilize vulnerable slopes by:</p>
+                        <ul>
+                            <li id="maps-benefit1">Reinforcing soil structure with natural biodegradable fibers</li>
+                            <li id="maps-benefit2">Promoting deep root systems that bind soil together</li>
+                            <li id="maps-benefit3">Improving water absorption and reducing surface runoff</li>
+                            <li id="maps-benefit4">Providing immediate erosion control while vegetation establishes</li>
+                            <li id="maps-benefit5">Creating a sustainable, self-maintaining vegetative cover</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section id="payment" class="payment-page">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="card payment-card">
+                        <div class="card-header bg-success text-white text-center py-3">
+                            <h3 class="mb-0" id="payment-title">Complete Your Purchase</h3>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Order Summary -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h5 class="mb-3" id="payment-orderSummary">Order Summary</h5>
+                                    <div id="cart-items">
+                                        <!-- Cart items will be dynamically added here -->
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <strong id="payment-total">Total:</strong>
+                                        <strong id="cart-total">RM 0.00</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Methods -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="mb-3" id="payment-paymentMethods">Select Payment Method</h5>
+                                    
+                                    <div class="payment-method" data-method="credit-card">
+                                        <div class="d-flex align-items-center">
+                                            <i class="payment-icon fas fa-credit-card"></i>
+                                            <div>
+                                                <h6 class="mb-1">Credit/Debit Card</h6>
+                                                <p class="mb-0 text-muted">Pay with Visa, Mastercard, or American Express</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="payment-method" data-method="tng">
+                                        <div class="d-flex align-items-center">
+                                            <i class="payment-icon fas fa-mobile-alt"></i>
+                                            <div>
+                                                <h6 class="mb-1">Touch 'n Go eWallet</h6>
+                                                <p class="mb-0 text-muted">Fast and secure payment with TNG eWallet</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="payment-method" data-method="bank-transfer">
+                                        <div class="d-flex align-items-center">
+                                            <i class="payment-icon fas fa-university"></i>
+                                            <div>
+                                                <h6 class="mb-1">Bank Transfer</h6>
+                                                <p class="mb-0 text-muted">Transfer directly to our bank account</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Forms -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <!-- Credit Card Form -->
+                                    <div id="credit-card-form" class="payment-form hidden">
+                                        <h5 class="mb-3">Credit Card Details</h5>
+                                        <form id="card-payment-form">
+                                            <div class="mb-3">
+                                                <label for="card-number" class="form-label">Card Number</label>
+                                                <input type="text" class="form-control" id="card-number" placeholder="1234 5678 9012 3456" required>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="expiry-date" class="form-label">Expiry Date</label>
+                                                    <input type="text" class="form-control" id="expiry-date" placeholder="MM/YY" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="cvv" class="form-label">CVV</label>
+                                                    <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="name-on-card" class="form-label">Name on Card</label>
+                                                <input type="text" class="form-control" id="name-on-card" placeholder="John Doe" required>
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-success btn-lg w-100">Pay with Card</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                    <!-- Touch 'n Go Form -->
+                                    <div id="tng-form" class="payment-form hidden">
+                                        <div class="tng-payment">
+                                            <div class="tng-header">
+                                                <div class="tng-logo">tng</div>
+                                                <div>
+                                                    <h5 class="mb-0">Touch 'n Go eWallet</h5>
+                                                    <p class="mb-0">Secure Digital Payment</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label">Phone Number</label>
+                                                <input type="tel" class="form-control tng-phone-input" placeholder="+60 12 345 6789" required>
+                                            </div>
+                                            
+                                            <div class="qr-code-container">
+                                                <h6>Scan QR Code to Pay</h6>
+                                                <div class="qr-code">
+                                                    <!-- QR Code akan digenerate secara dinamis -->
+                                                    <div id="tng-qr-code" class="text-center">
+                                                        <div style="font-size: 12px; color: #666;">
+                                                            
+                                                           <img src="images/qr-payment.jpg" width="200" alt="Payment QR Code">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p class="mt-3 text-muted">Open your Touch 'n Go app and scan the QR code to complete payment</p>
+                                            </div>
+                                            
+                                            <button type="button" class="btn tng-button" onclick="processTngPayment()">
+                                                Confirm TNG Payment
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Bank Transfer Form -->
+                                    <div id="bank-transfer-form" class="payment-form hidden">
+                                        <h5 class="mb-3">Bank Transfer Details</h5>
+                                        <div class="alert alert-info">
+                                            <h6>Transfer to our Bank Account:</h6>
+                                            <p class="mb-1"><strong>Bank:</strong> Maybank</p>
+                                            <p class="mb-1"><strong>Account Name:</strong> EcoSeed Mat Sdn Bhd</p>
+                                            <p class="mb-1"><strong>Account Number:</strong> 1234 5678 9012</p>
+                                            <p class="mb-0"><strong>Amount:</strong> RM <span id="bank-amount">0.00</span></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="bank-reference" class="form-label">Reference Number</label>
+                                            <input type="text" class="form-control" id="bank-reference" placeholder="Your reference number" required>
+                                        </div>
+                                        <button type="button" class="btn btn-primary btn-lg w-100" onclick="processBankTransfer()">
+                                            Confirm Bank Transfer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel Section -->
+    <section id="admin" class="py-5 bg-light hidden">
+        <div class="container">
+            <div class="user-info">
+                <h3>Admin Dashboard</h3>
+                <p>Welcome, <span id="admin-name"></span>!</p>
+            </div>
+            
+            <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">Pending Orders</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">Users</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab">Products</button>
+                </li>
+            </ul>
+            
+            <div class="tab-content admin-panel" id="adminTabsContent">
+                <!-- Pending Orders Tab -->
+                <div class="tab-pane fade show active" id="orders" role="tabpanel">
+                    <h4>Pending Orders for Approval</h4>
+                    <div class="table-responsive admin-table">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>User</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Payment Method</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pending-orders">
+                                <!-- Pending orders will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Users Tab -->
+                <div class="tab-pane fade" id="users" role="tabpanel">
+                    <h4>Registered Users</h4>
+                    <div class="table-responsive admin-table">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Registration Date</th>
+                                    <th>Orders</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-list">
+                                <!-- Users will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Products Tab -->
+                <div class="tab-pane fade" id="products" role="tabpanel">
+                    <h4>Product Management</h4>
+                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                        <i class="fas fa-plus"></i> Add New Product
+                    </button>
+                    <div class="table-responsive admin-table">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-list">
+                                <!-- Products will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+	
+    <!-- About Us Section -->
+    <section id="about" class="mission-vision">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="text-center">
+                        <h2 id="about-mission">Our Mission</h2>
+                        <p id="about-missionText">Our mission is to advance environmental well-being through innovative, plant-based solutions that make ecological restoration and sustainable cultivation simple, accessible, and highly effective for diverse applications. We are committed to empowering individuals and communities with the tools to cultivate greener environments and enhance natural integrity.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <h2 id="about-vision">Our Vision</h2>
+                        <p id="about-visionText">To shape a future where sustainable vegetation systems become the foundation of safer, greener, and more resilient landscapes. We aspire to empower communities and industries with accessible, plant-based technologies that not only support cultivation and ecological restoration but also enhance natural stability in vulnerable environments.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="text-center">
+                        <h2 id="about-team">Meet Our Team</h2>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
+                             <div class="text-center">
+                                <img src="images/team-suhaila.jpg" width="100" alt="Nur Suhaila" class="rounded-circle mb-3">
+                                <h3>NUR SUHAILA BINTI AHMAD SABRI </h3>
+                                <p id="about-role2">Founder & Chief Executive Officer (CEO)</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="text-center">
+                                <img src="images/team-ayuni.jpg" width="100" alt="Syazwani Ayuni" class="rounded-circle mb-3">
+                                <h3>SYAZWANI AYUNI BINTI SHARUDDIN</h3>
+                                <p id="about-role2">Head of Research & Development (R&D) – Botany Specialist</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="text-center">
+                                <img src="images/team-hafni.jpg" width="100" alt="Nur Hafni" class="rounded-circle mb-3">
+                                <h3>NUR HAFNI BINTI MOHD KHAIRY</h3>
+                                <p id="about-role3">Chief Operations & Sustainability Officer (COO)</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="text-center">
+                                <img src="images/team-alia.jpg" width="100" alt="Fatin Alia" class="rounded-circle mb-3">
+                                <h3>FATIN ALIA FARHANA BINTI AHMAD TAMIZI</h3>
+                                <p id="about-role4">Marketing & Communications Director</p>
+                            </div>
+                        </div>
+                      
+                            <div class="text-center">
+                                  <img src="images/team-ain.jpg" width="100" alt="Nur'Ain" class="rounded-circle mb-3">
+                                <h3>NUR'AIN ZAMRIY</h3>
+                                <p id="about-role5">Finance & Partnerships Manager</p>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>EcoSeed Mat</h5>
+                    <p id="footer-tagline">Revolutionizing Eco-Stabilization and Cultivation since 2025.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 id="footer-quickLinks">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#home" class="text-white" id="footer-home">Home</a></li>
+                        <li><a href="#product" class="text-white" id="footer-product">Product</a></li>
+                        <li><a href="#about" class="text-white" id="footer-about">About Us</a></li>
+                        <li><a href="#maps" class="text-white" id="footer-maps">Landslide Risk Maps</a></li>
+                        <li><a href="#payment" class="text-white" id="footer-payment">Payment</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 id="footer-contactUs">Contact Us</h5>
+                    <address class="text-white">
+                        Email: info@ecoseedmat.com<br>
+                        Phone: +60 3-1234 5678<br>
+                        Address: EcoTech Park, SEREMBAN 3<br>
+						instagram: <img src="images/qr-instagram.jpg" width="50" alt="Instagram QR">
+                    </address>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p>&copy; 2025 EcoSeed Mat. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-product-form">
+                        <div class="mb-3">
+                            <label for="product-name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="product-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="product-description" class="form-label">Description</label>
+                            <textarea class="form-control" id="product-description" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="product-price" class="form-label">Price (RM)</label>
+                            <input type="number" class="form-control" id="product-price" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="product-stock" class="form-label">Stock Quantity</label>
+                            <input type="number" class="form-control" id="product-stock" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addProduct()">Add Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Success Modal -->
+    <div class="modal fade" id="paymentSuccessModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body payment-success">
+                    <div class="payment-success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Payment Successful!</h3>
+                    <p>Thank you for your purchase. Your order has been received and is being processed.</p>
+                    <p><strong>Order ID: #<span id="success-order-id"></span></strong></p>
+                    <p>You will receive a confirmation email shortly.</p>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+        // Database simulation using localStorage
+        const DB_KEYS = {
+            USERS: 'ecoseed_users',
+            ORDERS: 'ecoseed_orders',
+            PRODUCTS: 'ecoseed_products'
+        };
+
+        // Initialize database if empty
+        function initializeDatabase() {
+            if (!localStorage.getItem(DB_KEYS.USERS)) {
+                // Default admin user
+                const adminUser = {
+                    id: 1,
+                    name: 'Admin User',
+                    email: 'admin@ecoseed.com',
+                    password: 'admin123', // In a real app, this should be hashed
+                    phone: '+60 3-1234 5678',
+                    address: 'EcoTech Park, Kuala Lumpur, Malaysia',
+                    role: 'admin',
+                    registrationDate: new Date().toISOString()
+                };
+                
+                const users = [adminUser];
+                localStorage.setItem(DB_KEYS.USERS, JSON.stringify(users));
+            }
+            
+            if (!localStorage.getItem(DB_KEYS.ORDERS)) {
+                localStorage.setItem(DB_KEYS.ORDERS, JSON.stringify([]));
+            }
+            
+            if (!localStorage.getItem(DB_KEYS.PRODUCTS)) {
+                const defaultProducts = [
+                    {
+                        id: 1,
+                        name: 'EcoSeed Mat',
+                        description: 'The Ultimate All-in-One Solution for Sustainable Landscaping and Erosion Control',
+                        price: 50.00,
+                        stock: 100
+                    }
+                ];
+                localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(defaultProducts));
+            }
+        }
+
+        // Get data from database
+        function getData(key) {
+            return JSON.parse(localStorage.getItem(key)) || [];
+        }
+
+        // Save data to database
+        function saveData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        // Generate unique ID
+        function generateId(data) {
+            if (data.length === 0) return 1;
+            return Math.max(...data.map(item => item.id)) + 1;
+        }
+
+        // Check if user is logged in
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                showUserInterface(currentUser);
+                return true;
+            }
+            return false;
+        }
+
+        // Show appropriate interface based on user role
+        function showUserInterface(user) {
+            document.getElementById('nav-login').style.display = 'none';
+            document.getElementById('user-nav-item').style.display = 'block';
+            document.getElementById('user-greeting').textContent = `Hello, ${user.name}`;
+            
+            if (user.role === 'admin') {
+                document.getElementById('admin-nav-item').style.display = 'block';
+            }
+        }
+
+        // Login function
+        function login(email, password) {
+            const users = getData(DB_KEYS.USERS);
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showUserInterface(user);
+                
+                // Close modal
+                const authModal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+                authModal.hide();
+                
+                return true;
+            }
+            return false;
+        }
+
+        // Register function
+        function register(userData) {
+            const users = getData(DB_KEYS.USERS);
+            
+            // Check if email already exists
+            if (users.find(u => u.email === userData.email)) {
+                alert('Email already registered!');
+                return false;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: generateId(users),
+                ...userData,
+                role: 'customer',
+                registrationDate: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            saveData(DB_KEYS.USERS, users);
+            
+            alert('Registration successful! Please login.');
+            
+            // Switch to login tab
+            const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+            loginTab.show();
+            
+            return true;
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('currentUser');
+            document.getElementById('nav-login').style.display = 'block';
+            document.getElementById('user-nav-item').style.display = 'none';
+            document.getElementById('admin-nav-item').style.display = 'none';
+            document.getElementById('admin').classList.add('hidden');
+        }
+
+        // Show admin panel
+        function showAdminPanel() {
+            document.getElementById('admin').classList.remove('hidden');
+            loadAdminData();
+        }
+
+        // Load admin data
+        function loadAdminData() {
+            loadPendingOrders();
+            loadUsers();
+            loadProducts();
+        }
+
+        // Load pending orders for admin
+        function loadPendingOrders() {
+            const orders = getData(DB_KEYS.ORDERS);
+            const pendingOrders = orders.filter(order => order.status === 'pending');
+            const pendingOrdersTable = document.getElementById('pending-orders');
+            
+            pendingOrdersTable.innerHTML = '';
+            
+            pendingOrders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${order.id}</td>
+                    <td>${order.userName}</td>
+                    <td>${order.productName}</td>
+                    <td>${order.quantity}</td>
+                    <td>RM ${order.total.toFixed(2)}</td>
+                    <td>${order.paymentMethod || 'N/A'}</td>
+                    <td>${new Date(order.date).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-success btn-sm" onclick="approveOrder(${order.id})">Approve</button>
+                        <button class="btn btn-danger btn-sm" onclick="rejectOrder(${order.id})">Reject</button>
+                    </td>
+                `;
+                pendingOrdersTable.appendChild(row);
+            });
+        }
+
+        // Load users for admin
+        function loadUsers() {
+            const users = getData(DB_KEYS.USERS);
+            const usersTable = document.getElementById('users-list');
+            
+            usersTable.innerHTML = '';
+            
+            users.forEach(user => {
+                const orders = getData(DB_KEYS.ORDERS);
+                const userOrders = orders.filter(order => order.userId === user.id);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.phone || 'N/A'}</td>
+                    <td>${new Date(user.registrationDate).toLocaleDateString()}</td>
+                    <td>${userOrders.length}</td>
+                `;
+                usersTable.appendChild(row);
+            });
+        }
+
+        // Load products for admin
+        function loadProducts() {
+            const products = getData(DB_KEYS.PRODUCTS);
+            const productsTable = document.getElementById('products-list');
+            
+            productsTable.innerHTML = '';
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.name}</td>
+                    <td>${product.description}</td>
+                    <td>RM ${product.price.toFixed(2)}</td>
+                    <td>${product.stock}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editProduct(${product.id})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.id})">Delete</button>
+                    </td>
+                `;
+                productsTable.appendChild(row);
+            });
+        }
+
+        // Approve order
+        function approveOrder(orderId) {
+            const orders = getData(DB_KEYS.ORDERS);
+            const orderIndex = orders.findIndex(order => order.id === orderId);
+            
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = 'approved';
+                saveData(DB_KEYS.ORDERS, orders);
+                loadPendingOrders();
+                alert('Order approved successfully!');
+            }
+        }
+
+        // Reject order
+        function rejectOrder(orderId) {
+            const orders = getData(DB_KEYS.ORDERS);
+            const orderIndex = orders.findIndex(order => order.id === orderId);
+            
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = 'rejected';
+                saveData(DB_KEYS.ORDERS, orders);
+                loadPendingOrders();
+                alert('Order rejected!');
+            }
+        }
+
+        // Add product
+        function addProduct() {
+            const name = document.getElementById('product-name').value;
+            const description = document.getElementById('product-description').value;
+            const price = parseFloat(document.getElementById('product-price').value);
+            const stock = parseInt(document.getElementById('product-stock').value);
+            
+            if (!name || !description || !price || !stock) {
+                alert('Please fill all fields!');
+                return;
+            }
+            
+            const products = getData(DB_KEYS.PRODUCTS);
+            const newProduct = {
+                id: generateId(products),
+                name,
+                description,
+                price,
+                stock
+            };
+            
+            products.push(newProduct);
+            saveData(DB_KEYS.PRODUCTS, products);
+            
+            // Close modal and reset form
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+            modal.hide();
+            document.getElementById('add-product-form').reset();
+            
+            loadProducts();
+            alert('Product added successfully!');
+        }
+
+        // Edit product (placeholder)
+        function editProduct(productId) {
+            alert('Edit product functionality would be implemented here');
+        }
+
+        // Delete product
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                const products = getData(DB_KEYS.PRODUCTS);
+                const updatedProducts = products.filter(product => product.id !== productId);
+                saveData(DB_KEYS.PRODUCTS, updatedProducts);
+                loadProducts();
+                alert('Product deleted successfully!');
+            }
+        }
+
+        // Cart functionality
+        let cart = [];
+        let selectedPaymentMethod = null;
+        
+        // Add to cart button
+        document.querySelector('.add-to-cart').addEventListener('click', function() {
+            const product = this.getAttribute('data-product');
+            const price = parseFloat(this.getAttribute('data-price'));
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            // Check if product already in cart
+            const existingItem = cart.find(item => item.product === product);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    product: product,
+                    price: price,
+                    quantity: quantity
+                });
+            }
+            
+            updateCart();
+            
+            // Show alert in current language
+            const currentLang = document.getElementById('lang-en').classList.contains('active') ? 'en' : 'ms';
+            if (currentLang === 'en') {
+                alert(`${quantity} ${product}(s) added to cart!`);
+            } else {
+                alert(`${quantity} ${product}(s) telah ditambah ke troli!`);
+            }
+        });
+        
+        // Update cart display
+        function updateCart() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            // Update cart count
+            let totalItems = 0;
+            cart.forEach(item => {
+                totalItems += item.quantity;
+            });
+            cartCount.textContent = totalItems;
+            
+            // Update cart items in payment section
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <div class="d-flex justify-content-between">
+                        <span>${item.product} (x${item.quantity})</span>
+                        <span>RM ${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+                cartItems.appendChild(itemElement);
+            });
+            
+            // Update total
+            cartTotal.textContent = `RM ${total.toFixed(2)}`;
+            
+            // Update payment amounts
+            document.getElementById('tng-amount').textContent = total.toFixed(2);
+            document.getElementById('bank-amount').textContent = total.toFixed(2);
+        }
+        
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // Remove selected class from all methods
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked method
+                this.classList.add('selected');
+                
+                // Get selected method
+                selectedPaymentMethod = this.getAttribute('data-method');
+                
+                // Hide all payment forms
+                document.querySelectorAll('.payment-form').forEach(form => {
+                    form.classList.add('hidden');
+                });
+                
+                // Show selected payment form
+                document.getElementById(`${selectedPaymentMethod}-form`).classList.remove('hidden');
+            });
+        });
+        
+        // Process Touch 'n Go payment
+        function processTngPayment() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items before proceeding to payment.');
+                return;
+            }
+            
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method.');
+                return;
+            }
+            
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Please login to complete your purchase!');
+                document.getElementById('nav-login').click();
+                return;
+            }
+            
+            // Create order
+            const productName = cart[0].product;
+            const quantity = cart[0].quantity;
+            const total = cart[0].price * cart[0].quantity;
+            
+            if (createOrder(productName, quantity, total, 'Touch \'n Go')) {
+                // Simulate payment processing
+                setTimeout(() => {
+                    showPaymentSuccess();
+                }, 2000);
+            }
+        }
+        
+        // Process bank transfer
+        function processBankTransfer() {
+            const reference = document.getElementById('bank-reference').value;
+            
+            if (!reference) {
+                alert('Please enter a reference number.');
+                return;
+            }
+            
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items before proceeding to payment.');
+                return;
+            }
+            
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Please login to complete your purchase!');
+                document.getElementById('nav-login').click();
+                return;
+            }
+            
+            // Create order
+            const productName = cart[0].product;
+            const quantity = cart[0].quantity;
+            const total = cart[0].price * cart[0].quantity;
+            
+            if (createOrder(productName, quantity, total, 'Bank Transfer', reference)) {
+                // Simulate payment processing
+                setTimeout(() => {
+                    showPaymentSuccess();
+                }, 2000);
+            }
+        }
+        
+        // Process card payment
+        document.getElementById('card-payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items before proceeding to payment.');
+                return;
+            }
+            
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Please login to complete your purchase!');
+                document.getElementById('nav-login').click();
+                return;
+            }
+            
+            // Create order
+            const productName = cart[0].product;
+            const quantity = cart[0].quantity;
+            const total = cart[0].price * cart[0].quantity;
+            
+            if (createOrder(productName, quantity, total, 'Credit Card')) {
+                // Simulate payment processing
+                setTimeout(() => {
+                    showPaymentSuccess();
+                }, 2000);
+            }
+        });
+        
+        // Create order function
+        function createOrder(productName, quantity, total, paymentMethod, reference = '') {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                alert('Please login to place an order!');
+                document.getElementById('nav-login').click();
+                return false;
+            }
+            
+            const orders = getData(DB_KEYS.ORDERS);
+            const newOrder = {
+                id: generateId(orders),
+                userId: currentUser.id,
+                userName: currentUser.name,
+                productName,
+                quantity,
+                total,
+                paymentMethod,
+                reference,
+                status: 'pending',
+                date: new Date().toISOString()
+            };
+            
+            orders.push(newOrder);
+            saveData(DB_KEYS.ORDERS, orders);
+            
+            return newOrder.id;
+        }
+        
+        // Show payment success
+        function showPaymentSuccess() {
+            const orders = getData(DB_KEYS.ORDERS);
+            const latestOrder = orders[orders.length - 1];
+            
+            document.getElementById('success-order-id').textContent = latestOrder.id;
+            
+            const successModal = new bootstrap.Modal(document.getElementById('paymentSuccessModal'));
+            successModal.show();
+            
+            // Clear cart
+            cart = [];
+            updateCart();
+            
+            // Reset forms
+            document.getElementById('card-payment-form').reset();
+            document.getElementById('bank-reference').value = '';
+            
+            // Reset payment method selection
+            document.querySelectorAll('.payment-method').forEach(m => {
+                m.classList.remove('selected');
+            });
+            document.querySelectorAll('.payment-form').forEach(form => {
+                form.classList.add('hidden');
+            });
+            selectedPaymentMethod = null;
+        }
+
+        // Language system
+        const translations = {
+            en: {
+                // Navigation
+                "nav-home": "Home",
+                "nav-product": "Product",
+                "nav-about": "About Us",
+                "nav-maps": "Landslide Risk Maps",
+                "nav-payment": "Payment",
+                "nav-cart": "Cart",
+                "nav-login": "Login",
+                "nav-admin": "Admin Panel",
+                
+                // Home section
+                "home-title": "Revolutionizing Eco-Stabilization and Cultivation",
+                "home-description": "Founded in 2024, EcoSeed Mat emerged as a pioneering startup with a profound vision: to democratize accessible, sustainable cultivation and provide innovative solutions for environmental challenges.",
+                "home-button": "Discover EcoSeed Mat",
+                
+                // Product section
+                "product-title": "EcoSeed Mat",
+                "product-subtitle": "The Ultimate All-in-One Solution for Sustainable Landscaping and Erosion Control",
+                "product-features": "Key Features:",
+                "product-feature1-title": "100% Biodegradable",
+                "product-feature1-description": "Eco-friendly materials that naturally decompose and enrich soil",
+                "product-feature2-title": "Pre-seeded",
+                "product-feature2-description": "Premium grass and plant seeds for guaranteed germination",
+                "product-feature3-title": "Water Retention",
+                "product-feature3-description": "Advanced technology reduces watering needs by 50%",
+                "product-feature4-title": "Erosion Control",
+                "product-feature4-description": "Specialized design prevents soil erosion on slopes",
+                "product-price": "Per 10 sqm roll | Free shipping available",
+                "product-quantity": "Quantity:",
+                "product-option1": "1 Roll (10 sqm)",
+                "product-option2": "2 Rolls (20 sqm)",
+                "product-option3": "5 Rolls (50 sqm)",
+                "product-option4": "10 Rolls (100 sqm)",
+                "product-addToCart": "Add to Cart",
+                "product-specifications": "Product Specifications",
+                "product-spec1-title": "Coverage Area",
+                "product-spec1-value": "10 square meters per roll",
+                "product-spec2-title": "Seed Composition",
+                "product-spec2-value": "Premium blend of 5 grass varieties",
+                "product-spec3-title": "Germination Time",
+                "product-spec3-value": "5-10 days under optimal conditions",
+                "product-spec4-title": "Fertilizer",
+                "product-spec4-value": "Slow-release organic fertilizer",
+                "product-spec5-title": "Biodegradation Time",
+                "product-spec5-value": "6-12 months",
+                "product-spec6-title": "Installation",
+                "product-spec6-value": "Unroll on prepared soil and water",
+                "product-spec7-title": "Applications",
+                "product-spec7-value": "Lawns, slopes, erosion control",
+                "product-spec8-title": "Warranty",
+                "product-spec8-value": "12-month growth guarantee",
+                
+                // Maps section
+                "maps-title": "Landslide Risk Areas & Our Solutions",
+                "maps-subtitle": "Identifying high-risk areas for landslides and providing EcoSeed Mat solutions for stabilization",
+                "maps-legend": "Risk Level Legend:",
+                "maps-legendHigh": "High Risk Area",
+                "maps-legendMedium": "Medium Risk Area",
+                "maps-legendLow": "Low Risk Area",
+                "maps-legendEco": "EcoSeed Mat Project Site",
+                "maps-thailand": "Landslide Risk Areas in Thailand",
+                "maps-global": "Global Landslide Risk Areas",
+                "maps-thailandCoordinates": "Thailand Risk Coordinates:",
+                "maps-globalCoordinates": "Global Risk Coordinates:",
+                "maps-howItHelps": "How EcoSeed Mat Helps Prevent Landslides",
+                "maps-howItHelpsText": "Our EcoSeed Mat works to stabilize vulnerable slopes by:",
+                "maps-benefit1": "Reinforcing soil structure with natural biodegradable fibers",
+                "maps-benefit2": "Promoting deep root systems that bind soil together",
+                "maps-benefit3": "Improving water absorption and reducing surface runoff",
+                "maps-benefit4": "Providing immediate erosion control while vegetation establishes",
+                "maps-benefit5": "Creating a sustainable, self-maintaining vegetative cover",
+                
+                // Payment section
+                "payment-title": "Complete Your Purchase",
+                "payment-orderSummary": "Order Summary",
+                "payment-total": "Total:",
+                "payment-paymentMethods": "Select Payment Method",
+                "payment-paymentDetails": "Payment Details",
+                "payment-cardNumber": "Card Number",
+                "payment-expiryDate": "Expiry Date",
+                "payment-cvv": "CVV",
+                "payment-nameOnCard": "Name on Card",
+                "payment-billingAddress": "Billing Address",
+                "payment-payNow": "Pay Now",
+                
+                // About section
+                "about-mission": "Our Mission",
+                "about-missionText": "Our mission is to advance environmental well-being through innovative, plant-based solutions that make ecological restoration and sustainable cultivation simple, accessible, and highly effective for diverse applications. We are committed to empowering individuals and communities with the tools to cultivate greener environments and enhance natural integrity.",
+                "about-vision": "Our Vision",
+                "about-visionText": "To shape a future where sustainable vegetation systems become the foundation of safer, greener, and more resilient landscapes. We aspire to empower communities and industries with accessible, plant-based technologies that not only support cultivation and ecological restoration but also enhance natural stability in vulnerable environments.",
+                "about-team": "Meet Our Team",
+                "about-role1": "Founder & Chief Executive Officer (CEO)",
+                "about-role2": "Head of Research & Development (R&D) – Botany Specialist",
+                "about-role3": "Chief Operations & Sustainability Officer (COO)",
+                "about-role4": "Marketing & Communications Director",
+                "about-role5": "Finance & Partnerships Manager",
+                
+                // Footer
+                "footer-tagline": "Revolutionizing Eco-Stabilization and Cultivation since 2024.",
+                "footer-quickLinks": "Quick Links",
+                "footer-contactUs": "Contact Us",
+                "footer-home": "Home",
+                "footer-product": "Product",
+                "footer-about": "About Us",
+                "footer-maps": "Landslide Risk Maps",
+                "footer-payment": "Payment"
+            },
+            ms: {
+                // Navigation
+                "nav-home": "Laman Utama",
+                "nav-product": "Produk",
+                "nav-about": "Tentang Kami",
+                "nav-maps": "Peta Risiko Tanah Runtuh",
+                "nav-payment": "Pembayaran",
+                "nav-cart": "Troli",
+                "nav-login": "Log Masuk",
+                "nav-admin": "Panel Admin",
+                
+                // Home section
+                "home-title": "Merevolusikan Penstabilan Ekologi dan Penanaman",
+                "home-description": "Ditubuhkan pada tahun 2024, EcoSeed Mat muncul sebagai syarikat permulaan perintis dengan visi yang mendalam: untuk mendemokrasikan penanaman yang mudah diakses dan mampan serta menyediakan penyelesaian inovatif untuk cabaran alam sekitar.",
+                "home-button": "Terokai EcoSeed Mat",
+                
+                // Product section
+                "product-title": "EcoSeed Mat",
+                "product-subtitle": "Penyelesaian Semua-dalam-Satu untuk Landskap Lestari dan Kawalan Hakisan",
+                "product-features": "Ciri Utama:",
+                "product-feature1-title": "100% Boleh Terurai",
+                "product-feature1-description": "Bahan mesra alam yang terurai secara semula jadi dan menyuburkan tanah",
+                "product-feature2-title": "Prabenih",
+                "product-feature2-description": "Benih rumput dan tumbuhan premium untuk percambahan terjamin",
+                "product-feature3-title": "Pengekalan Air",
+                "product-feature3-description": "Teknologi canggih mengurangkan keperluan penyiraman sebanyak 50%",
+                "product-feature4-title": "Kawalan Hakisan",
+                "product-feature4-description": "Reka bentuk khusus mencegah hakisan tanah di cerun",
+                "product-price": "Setiap gulung 10 meter persegi | Penghantaran percuma tersedia",
+                "product-quantity": "Kuantiti:",
+                "product-option1": "1 Gulung (10 meter persegi)",
+                "product-option2": "2 Gulung (20 meter persegi)",
+                "product-option3": "5 Gulung (50 meter persegi)",
+                "product-option4": "10 Gulung (100 meter persegi)",
+                "product-addToCart": "Tambah ke Troli",
+                "product-specifications": "Spesifikasi Produk",
+                "product-spec1-title": "Kawasan Liputan",
+                "product-spec1-value": "10 meter persegi setiap gulung",
+                "product-spec2-title": "Komposisi Benih",
+                "product-spec2-value": "Campuran premium 5 jenis rumput",
+                "product-spec3-title": "Masa Percambahan",
+                "product-spec3-value": "5-10 hari dalam keadaan optimum",
+                "product-spec4-title": "Baja",
+                "product-spec4-value": "Baja organik lepasan perlahan",
+                "product-spec5-title": "Masa Penguraian",
+                "product-spec5-value": "6-12 bulan",
+                "product-spec6-title": "Pemasangan",
+                "product-spec6-value": "Gulung di atas tanah yang disediakan dan siram",
+                "product-spec7-title": "Aplikasi",
+                "product-spec7-value": "Rumput, cerun, kawalan hakisan",
+                "product-spec8-title": "Jaminan",
+                "product-spec8-value": "Jaminan tumbesaran 12 bulan",
+                
+                // Maps section
+                "maps-title": "Kawasan Risiko Tanah Runtuh & Penyelesaian Kami",
+                "maps-subtitle": "Mengenal pasti kawasan berisiko tinggi untuk tanah runtuh dan menyediakan penyelesaian EcoSeed Mat untuk penstabilan",
+                "maps-legend": "Legenda Tahap Risiko:",
+                "maps-legendHigh": "Kawasan Berisiko Tinggi",
+                "maps-legendMedium": "Kawasan Berisiko Sederhana",
+                "maps-legendLow": "Kawasan Berisiko Rendah",
+                "maps-legendEco": "Tapak Projek EcoSeed Mat",
+                "maps-thailand": "Kawasan Risiko Tanah Runtuh di Thailand",
+                "maps-global": "Kawasan Risiko Tanah Runtuh Global",
+                "maps-thailandCoordinates": "Koordinat Risiko Thailand:",
+                "maps-globalCoordinates": "Koordinat Risiko Global:",
+                "maps-howItHelps": "Bagaimana EcoSeed Mat Membantu Mencegah Tanah Runtuh",
+                "maps-howItHelpsText": "EcoSeed Mat kami berfungsi untuk menstabilkan cerun yang terdedah dengan:",
+                "maps-benefit1": "Mengukuhkan struktur tanah dengan gentian boleh terurai semula jadi",
+                "maps-benefit2": "Menggalakkan sistem akar dalam yang mengikat tanah bersama",
+                "maps-benefit3": "Meningkatkan penyerapan air dan mengurangkan aliran permukaan",
+                "maps-benefit4": "Menyediakan kawalan hakisan segera semasa tumbuh-tumbuhan terbentuk",
+                "maps-benefit5": "Mewujudkan penutup tumbuhan yang mampan dan penyelenggaraan sendiri",
+                
+                // Payment section
+                "payment-title": "Lengkapkan Pembelian Anda",
+                "payment-orderSummary": "Ringkasan Pesanan",
+                "payment-total": "Jumlah:",
+                "payment-paymentMethods": "Pilih Kaedah Pembayaran",
+                "payment-paymentDetails": "Butiran Pembayaran",
+                "payment-cardNumber": "Nombor Kad",
+                "payment-expiryDate": "Tarikh Luput",
+                "payment-cvv": "CVV",
+                "payment-nameOnCard": "Nama pada Kad",
+                "payment-billingAddress": "Alamat Bil",
+                "payment-payNow": "Bayar Sekarang",
+                
+                // About section
+                "about-mission": "Misi Kami",
+                "about-missionText": "Misi kami adalah untuk memajukan kesejahteraan alam sekitar melalui penyelesaian inovatif berasaskan tumbuhan yang menjadikan pemulihan ekologi dan penanaman lestari mudah, mudah diakses, dan sangat berkesan untuk pelbagai aplikasi. Kami komited untuk memperkasakan individu dan komuniti dengan alat untuk menanam persekitaran yang lebih hijau dan meningkatkan integriti semula jadi.",
+                "about-vision": "Visi Kami",
+                "about-visionText": "Untuk membentuk masa depan di mana sistem tumbuh-tumbuhan yang mampan menjadi asas landskap yang lebih selamat, hijau, dan tahan lasak. Kami bercita-cita untuk memperkasakan komuniti dan industri dengan teknologi berasaskan tumbuhan yang mudah diakses yang bukan sahaja menyokong penanaman dan pemulihan ekologi tetapi juga meningkatkan kestabilan semula jadi dalam persekitaran yang terdedah.",
+                "about-team": "Bertemu Pasukan Kami",
+                "about-role1": "Pengasas & Ketua Pegawai Eksekutif (CEO)",
+                "about-role2": "Ketua Penyelidikan & Pembangunan (R&D) – Pakar Botani",
+                "about-role3": "Ketua Operasi & Pegawai Kelestarian (COO)",
+                "about-role4": "Pengarah Pemasaran & Komunikasi",
+                "about-role5": "Pengurus Kewangan & Perkongsian",
+                
+                // Footer
+                "footer-tagline": "Merevolusikan Penstabilan Ekologi dan Penanaman sejak 2024.",
+                "footer-quickLinks": "Pautan Pantas",
+                "footer-contactUs": "Hubungi Kami",
+                "footer-home": "Laman Utama",
+                "footer-product": "Produk",
+                "footer-about": "Tentang Kami",
+                "footer-maps": "Peta Risiko Tanah Runtuh",
+                "footer-payment": "Pembayaran"
+            }
+        };
+
+        // Function to set language
+        function setLanguage(lang) {
+            // Update all text elements with translations
+            for (const [key, value] of Object.entries(translations[lang])) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = value;
+                }
+            }
+            
+            // Update active button
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`lang-${lang}`).classList.add('active');
+            
+            // Update cart button text
+            updateCartButtonText(lang);
+        }
+
+        // Update cart button text based on language
+        function updateCartButtonText(lang) {
+            const cartButton = document.querySelector('.add-to-cart');
+            const quantity = document.getElementById('quantity').value;
+            const price = 50.00 * quantity;
+            
+            if (lang === 'en') {
+                cartButton.innerHTML = `<i class="fas fa-shopping-cart"></i> Add to Cart - RM ${price.toFixed(2)}`;
+            } else {
+                cartButton.innerHTML = `<i class="fas fa-shopping-cart"></i> Tambah ke Troli - RM ${price.toFixed(2)}`;
+            }
+        }
+
+        // Function to display coordinates
+        function displayCoordinates(containerId, locations) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            locations.forEach(location => {
+                const coordinateItem = document.createElement('div');
+                coordinateItem.className = 'coordinate-item';
+                coordinateItem.innerHTML = `
+                    <strong>${location.name}</strong><br>
+                    Lat: ${location.lat.toFixed(2)}, Lng: ${location.lng.toFixed(2)}<br>
+                    <small>Risk: ${location.risk}</small>
+                `;
+                container.appendChild(coordinateItem);
+            });
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDatabase();
+            
+            // Check if user is already logged in
+            checkLoginStatus();
+            
+            // Login form submission
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (!login(email, password)) {
+                    alert('Invalid email or password!');
+                }
+            });
+            
+            // Register form submission
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value;
+                const password = document.getElementById('reg-password').value;
+                const confirmPassword = document.getElementById('reg-confirm-password').value;
+                const phone = document.getElementById('reg-phone').value;
+                const address = document.getElementById('reg-address').value;
+                
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+                
+                const userData = {
+                    name,
+                    email,
+                    password,
+                    phone,
+                    address
+                };
+                
+                register(userData);
+            });
+            
+            // Show admin panel when admin nav item is clicked
+            document.getElementById('nav-admin').addEventListener('click', function(e) {
+                e.preventDefault();
+                showAdminPanel();
+                
+                // Set admin name
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    document.getElementById('admin-name').textContent = currentUser.name;
+                }
+            });
+            
+            // Update cart button text when quantity changes
+            document.getElementById('quantity').addEventListener('change', function() {
+                const currentLang = document.getElementById('lang-en').classList.contains('active') ? 'en' : 'ms';
+                updateCartButtonText(currentLang);
+            });
+            
+            // Initialize maps
+            // Custom icons for different risk levels
+            const highRiskIcon = L.divIcon({
+                html: '<div style="background-color: #f44336; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+                className: 'risk-marker',
+                iconSize: [16, 16]
+            });
+            
+            const mediumRiskIcon = L.divIcon({
+                html: '<div style="background-color: #ff9800; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+                className: 'risk-marker',
+                iconSize: [16, 16]
+            });
+            
+            const lowRiskIcon = L.divIcon({
+                html: '<div style="background-color: #ffeb3b; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+                className: 'risk-marker',
+                iconSize: [16, 16]
+            });
+            
+            const ecoProjectIcon = L.divIcon({
+                html: '<div style="background-color: #2e7d32; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white;"></div>',
+                className: 'risk-marker',
+                iconSize: [18, 18]
+            });
+            
+            // Thailand Map - Landslide Risk Areas
+            const thailandMap = L.map('thailand-map').setView([18.0, 100.0], 6);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(thailandMap);
+            
+            // Landslide risk areas in Thailand
+            const thailandRiskAreas = [
+                { lat: 19.5, lng: 98.5, risk: "high", name: "Chiang Mai Province" },
+                { lat: 18.5, lng: 98.5, risk: "high", name: "Mae Hong Son" },
+                { lat: 17.0, lng: 99.0, risk: "medium", name: "Tak Province" },
+                { lat: 16.5, lng: 101.0, risk: "medium", name: "Phetchabun Mountains" },
+                { lat: 8.5, lng: 98.5, risk: "high", name: "Phuket & Krabi" },
+                { lat: 14.0, lng: 101.0, risk: "low", name: "Nakhon Ratchasima" },
+                { lat: 12.5, lng: 101.5, risk: "medium", name: "Rayong" },
+                { lat: 18.0, lng: 100.0, risk: "high", name: "Uttaradit" },
+                { lat: 17.5, lng: 101.0, risk: "medium", name: "Loei" }
+            ];
+            
+            // EcoSeed Mat project sites in Thailand
+            const thailandProjects = [
+                { lat: 19.0, lng: 98.8, name: "Chiang Dao Slope Stabilization" },
+                { lat: 18.2, lng: 100.2, name: "Nan River Bank Protection" },
+                { lat: 8.3, lng: 98.8, name: "Phang Nga Coastal Erosion Control" }
+            ];
+            
+            // Add risk area markers to Thailand map
+            thailandRiskAreas.forEach(area => {
+                let icon;
+                if (area.risk === "high") icon = highRiskIcon;
+                else if (area.risk === "medium") icon = mediumRiskIcon;
+                else icon = lowRiskIcon;
+                
+                L.marker([area.lat, area.lng], { icon: icon })
+                    .addTo(thailandMap)
+                    .bindPopup(`<strong>${area.name}</strong><br>Risk Level: ${area.risk.toUpperCase()}<br>Coordinates: ${area.lat.toFixed(2)}, ${area.lng.toFixed(2)}`)
+                    .openPopup(); // Auto open popup
+            });
+            
+            // Add project markers to Thailand map
+            thailandProjects.forEach(project => {
+                L.marker([project.lat, project.lng], { icon: ecoProjectIcon })
+                    .addTo(thailandMap)
+                    .bindPopup(`<strong>EcoSeed Mat Project</strong><br>${project.name}<br>Coordinates: ${project.lat.toFixed(2)}, ${project.lng.toFixed(2)}`)
+                    .openPopup(); // Auto open popup
+            });
+            
+            // Display coordinates for Thailand map
+            displayCoordinates('thailand-coordinates', [...thailandRiskAreas, ...thailandProjects]);
+            
+            // World Map - Landslide Risk Areas
+            const worldMap = L.map('world-map').setView([20, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(worldMap);
+            
+            // Countries with high landslide risk
+            const highRiskCountries = [
+                { lat: 27.5, lng: 85.0, name: "Nepal", risk: "high" },
+                { lat: 28.0, lng: 84.0, name: "Bhutan", risk: "high" },
+                { lat: 35.0, lng: 136.0, name: "Japan", risk: "high" },
+                { lat: 6.0, lng: 125.0, name: "Philippines", risk: "high" },
+                { lat: 7.0, lng: 80.0, name: "Sri Lanka", risk: "high" },
+                { lat: -6.0, lng: 106.0, name: "Indonesia", risk: "high" },
+                { lat: 23.5, lng: 121.0, name: "Taiwan", risk: "high" },
+                { lat: 47.0, lng: 9.0, name: "Switzerland", risk: "high" },
+                { lat: 46.0, lng: 8.0, name: "Italy", risk: "high" },
+                { lat: 45.0, lng: 6.0, name: "France", risk: "high" },
+                { lat: 37.0, lng: -120.0, name: "USA (California)", risk: "high" },
+                { lat: 20.0, lng: -100.0, name: "Mexico", risk: "high" },
+                { lat: -33.0, lng: -70.0, name: "Chile", risk: "high" },
+                { lat: 4.0, lng: 73.0, name: "Maldives", risk: "high" },
+                { lat: 42.0, lng: 43.5, name: "Georgia", risk: "high" }
+            ];
+            
+            // Medium risk countries
+            const mediumRiskCountries = [
+                { lat: 56.0, lng: -3.0, name: "United Kingdom", risk: "medium" },
+                { lat: 60.0, lng: 10.0, name: "Norway", risk: "medium" },
+                { lat: 44.0, lng: 11.0, name: "Croatia", risk: "medium" },
+                { lat: -41.0, lng: 174.0, name: "New Zealand", risk: "medium" },
+                { lat: 15.0, lng: 101.0, name: "Thailand", risk: "medium" },
+                { lat: 22.0, lng: 79.0, name: "India", risk: "medium" },
+                { lat: 31.0, lng: 118.0, name: "China", risk: "medium" },
+                { lat: 36.0, lng: 128.0, name: "South Korea", risk: "medium" },
+                { lat: 17.0, lng: -88.0, name: "Belize", risk: "medium" },
+                { lat: 9.0, lng: -63.0, name: "Venezuela", risk: "medium" }
+            ];
+            
+            // EcoSeed Mat global projects
+            const globalProjects = [
+                { lat: 27.7, lng: 85.3, name: "Kathmandu Valley", risk: "project" },
+                { lat: 35.7, lng: 139.8, name: "Tokyo", risk: "project" },
+                { lat: 14.6, lng: 121.0, name: "Manila", risk: "project" },
+                { lat: -6.2, lng: 106.8, name: "Jakarta", risk: "project" },
+                { lat: 47.4, lng: 8.5, name: "Swiss Alps", risk: "project" },
+                { lat: 37.8, lng: -122.4, name: "California", risk: "project" },
+                { lat: 3.1, lng: 101.7, name: "Malaysia HQ", risk: "project" }
+            ];
+            
+            // Add markers to world map with clustering
+            const markers = L.markerClusterGroup();
+            
+            // Add high risk country markers
+            highRiskCountries.forEach(country => {
+                const marker = L.marker([country.lat, country.lng], { icon: highRiskIcon });
+                marker.bindPopup(`<strong>${country.name}</strong><br>High Landslide Risk<br>Coordinates: ${country.lat.toFixed(2)}, ${country.lng.toFixed(2)}`);
+                markers.addLayer(marker);
+            });
+            
+            // Add medium risk country markers
+            mediumRiskCountries.forEach(country => {
+                const marker = L.marker([country.lat, country.lng], { icon: mediumRiskIcon });
+                marker.bindPopup(`<strong>${country.name}</strong><br>Medium Landslide Risk<br>Coordinates: ${country.lat.toFixed(2)}, ${country.lng.toFixed(2)}`);
+                markers.addLayer(marker);
+            });
+            
+            // Add EcoSeed Mat project markers
+            globalProjects.forEach(project => {
+                const marker = L.marker([project.lat, project.lng], { icon: ecoProjectIcon });
+                marker.bindPopup(`<strong>EcoSeed Mat Project</strong><br>${project.name}<br>Coordinates: ${project.lat.toFixed(2)}, ${project.lng.toFixed(2)}`);
+                markers.addLayer(marker);
+            });
+            
+            worldMap.addLayer(markers);
+            
+            // Display coordinates for world map
+            displayCoordinates('world-coordinates', [...highRiskCountries, ...mediumRiskCountries, ...globalProjects]);
+            
+            // Auto open all popups after a short delay
+            setTimeout(() => {
+                // For Thailand map
+                thailandMap.eachLayer(layer => {
+                    if (layer instanceof L.Marker) {
+                        layer.openPopup();
+                    }
+                });
+                
+                // For World map - open a few representative popups
+                let opened = 0;
+                worldMap.eachLayer(layer => {
+                    if (layer instanceof L.Marker && opened < 5) {
+                        layer.openPopup();
+                        opened++;
+                    }
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
